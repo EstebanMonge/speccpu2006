@@ -1,0 +1,48 @@
+runspec v6674 - Copyright 1999-2011 Standard Performance Evaluation Corporation
+Using 'linux-suse10-amd64' tools
+Reading MANIFEST... 22481 files
+Loading runspec modules................
+Locating benchmarks...found 31 benchmarks in 6 benchsets.
+Reading config file '/usr/share/SPEC_CPU2006/config/default.cfg'
+Running "specperl /usr/share/SPEC_CPU2006/Docs/sysinfo" to gather system information.
+Setting up environment for runspec...
+About to re-exec runspec...
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+
+
+runspec v6674 - Copyright 1999-2011 Standard Performance Evaluation Corporation
+Using 'linux-suse10-amd64' tools
+Reading MANIFEST... 22481 files
+Loading runspec modules................
+Locating benchmarks...found 31 benchmarks in 6 benchsets.
+Reading config file '/usr/share/SPEC_CPU2006/config/default.cfg'
+Running "specperl /usr/share/SPEC_CPU2006/Docs/sysinfo" to gather system information.
+Retrieving flags file (/usr/share/SPEC_CPU2006/config/flags/Intel-ic12.1-official-linux64.20120425.xml)...
+Benchmarks selected: 400.perlbench
+Compiling Binaries
+  Up to date 400.perlbench base cpu2006.1.2.ic12.1.5.linux64.cloudharmonySSE4.2 default
+
+
+Setting Up Run Directories
+  Setting up 400.perlbench ref base cpu2006.1.2.ic12.1.5.linux64.cloudharmonySSE4.2 default: existing (run_base_ref_cpu2006.1.2.ic12.1.5.linux64.cloudharmonySSE4.2.0002)
+Running Benchmarks
+  Running 400.perlbench ref base cpu2006.1.2.ic12.1.5.linux64.cloudharmonySSE4.2 default (1 copy)
+Success: 1x400.perlbench
+Producing Raw Reports
+mach: default
+  ext: cpu2006.1.2.ic12.1.5.linux64.cloudharmonySSE4.2
+    size: ref
+      set: int
+        format: raw -> /usr/share/SPEC_CPU2006/result/CINT2006.051.ref.rsf
+Parsing flags for 400.perlbench base: done
+Doing flag reduction: done
+        format: flags -> /usr/share/SPEC_CPU2006/result/CINT2006.051.ref.flags.html
+        format: ASCII -> /usr/share/SPEC_CPU2006/result/CINT2006.051.ref.txt
+        format: CSV -> ./CINT2006.001.ref.csv
+        format: HTML -> /usr/share/SPEC_CPU2006/result/CINT2006.051.ref.html, /usr/share/SPEC_CPU2006/result/CINT2006.051.ref.gif
+      set: fp
+
+The log for this run is in /usr/share/SPEC_CPU2006/result/CPU2006.051.log
+
+runspec finished at Sun Jul  8 10:22:52 2012; 352 total seconds elapsed

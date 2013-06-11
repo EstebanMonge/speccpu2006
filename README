@@ -1,0 +1,604 @@
+SPEC_CPU2006 v1.2
+
+SPEC CPU2006 is designed to provide a comparative measure of compute-intensive 
+performance across the widest practical range of hardware using workloads 
+developed from real user applications. Metrics for both integer and floating 
+point compute intensive performance are provided. Full documentation is 
+available on the SPEC website here: http://www.spec.org/cpu2006/. In order to 
+use this benchmark, SPEC CPU must be installed and the $SPEC/config directory
+must be writable by the benchmark user. The runtime parameters defined below
+essentially determine the `runspec` arguments.
+
+A few notes on execution:
+1. Benchmark execution will always use the runspec action validate signifying 
+   the following: Build (if needed), run, check for correct answers, and 
+   generate reports
+2. check_version will always be 0
+
+RUNTIME PARAMETERS:
+
+* benchmark                  the benchmark(s) to run (space separated) - may 
+                             be any of the benchmark identifiers listed in 
+                             config/spec-benchmarks.ini each separated by a 
+                             space. To exclude benchmarks, use a hat prefix 
+                             (e.g. benchmark="int ^xalanc")
+                             DEFAULT: all
+
+* comment                    optional comment to add to the log file
+                             DEFAULT: null
+
+* config                     name of a configuration file in $SPEC/config to 
+                             use for the run. The following macros will be 
+                             automatically set via the --define argument 
+                             capability of runspec (optional parameters will 
+                             only be present if specified by the user):
+
+                             rate                if this is a rate run, this 
+                                                 macro will be present defining
+                                                 the number of copies
+
+                             cpu_cache:          level 2 cpu cache 
+                                                 (e.g. 4096 KB)
+
+                             cpu_count:          the number of CPU cores present
+
+                             cpu_family:         numeric CPU family identifier
+
+                             cpu_model:          numeric CPU model identifier
+
+                             cpu_name:           the CPU model name (e.g. Intel 
+                                                 Xeon 5570)
+
+                             cpu_speed:          the CPU speed in MHz 
+                                                 (e.g. 2933.436)
+
+                             cpu_vendor:         the CPU vendor 
+                                                 (e.g. GenuineIntel)
+
+                             compute_service_id: the compute service ID
+
+                             external_id:        an external identifier for the 
+                                                 compute resource
+
+                             instance_id:        identifier for the compute 
+                                                 resource under test 
+                                                 (e.g. m1.xlarge)
+
+                             ip_or_hostname:     IP or hostname of the compute 
+                                                 resource
+
+                             is32bit:            set if the OS is 32 bit
+
+                             is64bit:            set if the OS is 64 bit
+
+                             iteration_num:      the test iteration number 
+                                                 (e.g. 2)
+
+                             meta_*:             any of the meta parameters 
+                                                 listed below
+
+                             label:              user defined label for the 
+                                                 compute resource
+
+                             location:           location of the compute 
+                                                 resource (e.g. CA, US)
+
+                             memory_free:        free memory in KB
+
+                             memory_total:       total memory in KB
+
+                             numa:               set only if the system under
+                                                 test has numa support
+
+                             os:                 the operating system name 
+                                                 (e.g. centos)
+
+                             os_version:         the operating system version 
+                                                 (e.g. 6.2)
+
+                             provider_id:        the provider identifier 
+                                                 (e.g. aws)
+
+                             region:             compute resource region 
+                                                 identifier (e.g. us-west)
+
+                             run_id:             the benchmark run ID
+
+                             run_name:           the name of the run (if 
+                                                 assigned by the user)
+
+                             sse:                the highest SSE flag supported
+
+                             storage_config:     storage config identifier 
+                                                 (e.g. ebs, ephemeral)
+
+                             subregion:          compute resource subregion 
+                                                 identifier (e.g. 1a)
+
+                             test_id:            a user defined test identifier
+
+                             x64:                set if the x64 parameter is 
+                                                 also set
+
+                             if this parameter value identifies a remote file 
+                             (either an absolute or relative path on the 
+                             compute resource, or an external reference like 
+                             http://...) that file will be automatically copied 
+                             into the $SPEC/config directory - if not specified,
+                             a default.cfg file should be present in the config
+                             directory
+                             DEFAULT: null
+
+* copies                     the number of copies to run concurrently. A higher 
+                             number of copies will generally produce a better 
+                             score (subject to resource availability for those 
+                             copies to run). This parameter value may be one of 
+                             the following:
+            
+                             cpu relative:    a percentage relative to the 
+                                              number of CPU cores present. For 
+                                              example, if copies=50% and the 
+                                              compute instance has 4 cores, 2 
+                                              copies will be run - standard 
+                                              rounding will be used
+
+                             fixed:           a simple numeric value 
+                                              representing the number of copies 
+                                              to run (e.g. copies=2)
+
+                             memory relative: a memory to copies size ratio. 
+                                              For example, if copies=2GB and 
+                                              the compute instance has 16GB of 
+                                              memory, then 8 copies will be run
+                                              standard rounding will be used. 
+                                              Either MB or GB suffix may be 
+                                              used
+
+                             mixed:           a combination of the above 3 types 
+                                              may be used, each value separated 
+                                              by a forward slash /. For example, 
+                                              if copies=100%/2GB, then the number 
+                                              of copies will be the lesser of 
+                                              either the number of CPU cores or 
+                                              memory/2GB. Alternatively, if this 
+                                              value is prefixed by a +, the 
+                                              greater of the values will be 
+                                              used (e.g. copies=+100%/2GB)
+
+                             The general recommend ratio of copies to resources 
+                             is 2GB of memory for 64 bit binaries, 1GB of 
+                             memory for 32 bit binaries, 1 CPU core and 2-3GB 
+                             of free disk space. To specify a different number
+                             of copies for 32-bit binaries versus 64-bit 
+                             binaries (based on the value of the x64 parameter 
+                             defined below), separate the values with a pipe, 
+                             and prefix the 64-bit specified value with x64: 
+                             (e.g. copies="x64:100%/2GB|100%/1GB")
+                             DEFAULT: x64:100%/2GB|100%/1GB (NULL for speed runs)
+
+* debug                      print debug messages in the output log file
+                             DEFAULT: 0
+
+* define_*                   additional macros to define using the runspec 
+                             --define capability (these will be accessible in 
+                             the config file using the format %{macro_name}) - 
+                             any number of defines may be specified. 
+                             Conditional logic within the config file is 
+                             supported using the format:
+																%ifdef %{macro_name}
+																  # do something
+																%else
+																  # do something else
+																%endif
+                             More information is available about the use of 
+                             macros on the SPEC website here: 
+                             http://www.spec.org/cpu2006/Docs/config.html#sectionI.D.2
+                             DEFAULT: none
+
+* delay                      Add a delay of the specified number of seconds 
+                             before and after each benchmark. The delay is not 
+                             counted toward the benchmark runtime.
+                             DEFAULT: null
+
+* failover_no_sse            When set to 1 in combination with an sse parameter
+                             benchmark execution will be re-attempted without 
+                             sse if runspec execution with sse results in an 
+                             error status code (runspec will be restarted 
+                             without the sse macro set)
+                             DEFAULT: 0
+
+* flagsurl                   Path to a flags file to use for the run - A flags 
+                             file provides information about how to interpret 
+                             and report on flags (e.g. -O5, -fast, etc.) that
+                             are used in a config file. The flagsurl may be an 
+                             absolute or relative path in the file system, or 
+                             refer to an http accessible file
+                             (e.g. $[top]/config/flags/Intel-ic12.0-linux64-revB.xml)
+                             Alternatively, flagsurl can be defined in the 
+                             config file
+                             DEFAULT: null
+
+* huge_pages                 Whether or not to enable huge pages if 
+                             supported by the OS. To do so, prior to runspec
+                             execution, if the file /usr/lib64/libhugetlbfs.so
+                             or /usr/lib/libhugetlbfs.so exists, it then checks
+                             that free huge pages are available in /proc/meminfo
+                             and if these conditions are met, sets the following 
+                             environment variables:
+                               export HUGETLB_MORECORE=yes
+                               export LD_PRELOAD=/usr/lib/libhugetlbfs.so
+                             Note: In order to use huge pages, you must enable 
+                             them first using something along the lines of this:
+                               # first clear out existing huge pages
+                               echo  0 > /proc/sys/vm/nr_hugepages
+                               # create 500 2MB huge pages (1GB total) - 2MB is
+                               # the default huge page size on RHEL6
+                               echo 500 > /proc/sys/vm/nr_hugepages
+                               # mount the huge pages
+                               mkdir -p /libhugetlbfs
+                               mount -t hugetlbfs hugetlbfs /libhugetlbfs
+                             Note: RHEL6+ supports transparent huge pages (THP)
+                             by default. This parameter will likely have little
+                             effect on systems where THP is already enabled
+                             DEFAULT: 0
+
+* include_benchmark_metrics  Whether or not to output individual benchmark 
+                             metrics
+                             DEFAULT: 1
+
+* include_ref_times          Whether or not to output reference times for 
+                             individual benchmarks (for speed runs only)
+                             DEFAULT: 0
+
+* include_run_times          Whether or not to output run times for individual
+                             benchmarks
+                             DEFAULT: 0
+
+* ignore_errors              whether or not to ignore errors - if 0, benchmark 
+                             execution will stop if any errors occur
+                             DEFAULT: 0
+
+* iterations                 How many times to run each benchmark. This 
+                             parameter should only be changed if reportable=0
+                             because reportable runs always use 3 iterations
+                             DEFAULT: 3 (not used if reportable=1)
+
+* max_copies                 May be used in conjunction with dynamic copies
+                             calculation (see copies parameter above) in order
+                             to set a hard limit on the number of copies
+                             DEFAULT: null (no limit)
+
+* nobuild                    If 1, don't build new binaries if they do not 
+                             already exist
+                             DEFAULT: 1
+
+* no_numa                    Don't set the 'numa' macro or invoke using 
+                             `numactl --interleave=all` even if numa is 
+                             supported
+                             DEFAULT: 0
+
+* output_format              Comma separated list representing the types of 
+                             reports to generate - these artifacts may be 
+                             saved according to the archiver settings. valid 
+                             options for this parameter are listed below.
+                             DEFAULT: default
+
+                             all=All formats except screen, check, and mail
+
+                             csv=CSV Format
+
+                             default=HTML and Text
+
+                             html=HTML Format
+
+                             pdf=PDF Format
+
+                             postscript=Postscript Format
+
+                             raw=Raw Results Format
+
+                             text=ASCII Text Format
+
+* purge_output               Whether or not to remote run files (created in the 
+                             $SPEC/benchspec/CPU2006/*/run/ directories) 
+                             following benchmarking completion
+                             DEFAULT: 1
+
+* rate                       Whether to execute a speed or a rate run. Per the 
+                             official documentation: One way is to measure how 
+                             fast the computer completes a single task; this is 
+                             a speed measure. Another way is to measure how many 
+                             tasks a computer can accomplish in a certain amount 
+                             of time; this is called a throughput, capacity or 
+                             rate measure
+                             DEFAULT: 1
+
+* reportable                 whether or not to designate the run as reportable,  
+                             only int, fp or all benchmarks can be designated 
+                             as reportable. Per the official documentation: A 
+                             reportable execution runs all the benchmarks in a 
+                             suite with the test and train data sets as an 
+                             additional verification that the benchmark 
+                             binaries get correct results. The test and train 
+                             workloads are not timed. Then, the reference 
+                             workloads are run three times, so that median run 
+                             time can be determined for each benchmark.
+                             DEFAULT: 0
+
+* review                     Format results for review, meaning that additional 
+                             detail will be printed that normally would not be 
+                             present
+                             DEFAULT: 0
+
+* size                       Size of the input data to run: test, train or ref
+                             DEFAULT: ref
+
+* spec_dir                   directory where SPEC CPU is installed
+                             DEFAULT: /opt/cpu2006
+
+* sse                        Run with a specific SSE optimization flag - if not
+                             specified, the most optimal SSE flag will be used 
+                             for the processor in use. The options availabe for
+                             this parameter are:
+
+                             optimal: choose the most optimal flag
+                             none:    do not use SSE optimizations
+                             AVX:     AVX, SSE4.2, SSE4.1, SSSE3, SSE3, SSE2 
+                                      and SSE instructions
+                             SSE4.2:  SSE4.2, SSE4.1, SSSE3, SSE3 SSE2 and 
+                                      SSE instructions
+                             SSE4.1:  SSE4.1, SSSE3, SSE3, SSE2 and SSE 
+                                      instructions
+                             SSSE3:   SSSE3, SSE3, SSE2 and SSE instructions
+                             SSE3:    SSE3, SSE2 and SSE instructions
+                             SSE2:    SSE2 and SSE instructions
+
+                             More information is available regarding SSE compiler 
+                             optimizations here: http://goo.gl/yevdH
+                             DEFAULT: optimal
+
+* sse_max                    The max SSE flag to support in conjunction with 
+                             sse=optimal - if a processor supports greater than 
+                             this SSE level, sse_max will be used instead - 
+                             this parameter can also be set to 'none' signifying
+                             no maximum level
+                             DEFAULT: none
+
+* sse_min                    The minimum SSE flag to support in conjunction with 
+                             sse=optimal - if a processor does not at least 
+                             support this SSE level sse optimization will not 
+                             be used - this parameter can also be set to 'none' 
+                             signifying no minimum level
+                             DEFAULT: SSSE3
+
+* tune                       Tuning option: base, peak or all - reportable runs 
+                             must be either base or all
+                             DEFAULT: base
+
+* validate_disk_space        Whether or not to validate if there is sufficient 
+                             diskspace available for a run - this calculation
+                             is based on a minimum requirement of 2GB per copy
+                             If this space is not available, the run will fail
+                             DEFAULT: 1
+
+* x64                        Optional parameter that will be passed into 
+                             runspec using the macro --define x64 - this may be 
+                             used to designate that a run utilize 32-bit versus 
+                             64-bit binaries - this parameter can also affect 
+                             the dynamic calculation of the `copies` parameter
+                             described above. Valid options are 0, 1 or 2
+                             DEFAULT: 2 (use bm_is64bit environment variable)
+
+* x64_failover               This flag will cause testing to be re-attempted
+                             for the opposite x64 flag if current testing 
+                             fails (e.g. if initial testing is x64=1 and it 
+                             fails, then testing will be re-attempted with 
+                             x64=0). When used in conjunction with 
+                             failover_no_sse, sse failover will take precedence 
+                             followed by x64 failover
+                             DEFAULT: 0
+
+
+META PARAMETERS
+The following parameters can be used to change the values in the config file
+using macros. When specified, each of these parameters will be passed in to 
+runspec using --define [parameter_name]=[parameter_value] and will then be 
+accessible in the config using macros %{parameter_name}
+
+* meta_hw_avail              Date that this hardware or instance type was made 
+                             available
+                             DEFAULT: null
+
+* meta_hw_fpu                Floating point unit
+                             DEFAULT: null
+
+* meta_hw_ncpuorder          Valid number of processors orderable for this 
+                             model, including a unit. (e.g. "2, 4, 6, or 
+                             8 chips"
+                             DEFAULT: null
+* meta_hw_nthreadspercore    Number of hardware threads per core
+                             DEFAULT: 1
+
+* meta_hw_other              Any other relevant information about the instance 
+                             type
+                             DEFAULT: null
+
+* meta_hw_ocache             Other hardware primary cache
+                             DEFAULT: null
+
+* meta_hw_pcache             Hardware primary cache
+                             DEFAULT: null
+
+* meta_hw_tcache             Hardware tertiary cache
+                             DEFAULT: null
+
+* meta_license_num           The SPEC_CPU license number
+                             DEFAULT: null
+
+* meta_notes_base_N          Notes about base optimization options - all of the 
+                             meta_notes_* parameters support up to 5 entries 
+                             (N=1-5)
+                             DEFAULT: null
+
+* meta_notes_comp_N          Notes about compiler invocation
+                             DEFAULT: null
+
+* meta_notes_N               General notes
+                             DEFAULT: null
+
+* meta_notes_os_N            Notes about operating system tuning and changes
+                             DEFAULT: null
+
+* meta_notes_part_N          Notes about component parts (for kit-built systems)
+                             DEFAULT: null
+
+* meta_notes_peak_N          Notes about peak optimization options
+                             DEFAULT: null
+
+* meta_notes_plat_N          Notes about platform tuning and changes
+                             DEFAULT: null
+
+* meta_notes_port_N          Notes about portability options
+                             DEFAULT: null
+
+* meta_notes_submit_N        Notes about use of the submit option
+                             DEFAULT: null
+
+* meta_sw_avail              Date that the OS image was made available
+                             DEFAULT: null
+
+* meta_sw_other              Any other relevant information about the software
+                             DEFAULT: null
+
+* meta_tester                Name of the tester
+                             DEFAULT: null
+
+
+RESULT METRICS:
+
+Results will be provided for each benchmark and tune level (base or peak), 
+rate or speed as well as for the aggregate int and fp scores. Additionally, 
+metadata about the run will be provided. The following is an example of the 
+type of output to expect:
+
+
+RESULTS METADATA (common to all):
+
+benchmarks=     names of benchmarks run - or int, fp or all
+config=         config file name
+copies=         number of copies - for rate runs only
+flagsurl=       flags file url
+iterations=     number of iterations
+numa=           1 if numa was supported and used (i.e. --define numa flag set 
+                and numactl runspec invocation was used)
+output_format=  output format(s)
+rate=           1 if rate run, 0 if speed run
+size=           input data size - test, train or ref
+sse=            sse optimization used - not present for no sse
+tune=           tune level - base, peak or all
+x64=            1 if 64-bit binaries used, 0 if 32-bit
+valid=          1 if this was a valid run (0 if invalid)
+
+
+AGGREGATE METRICS:
+SPEC CPU2006 consists of a total of 29 individual benchmarks. 12 of these 
+benchmarks measure integer related CPU performance, while the remaining 19
+measure floating point performance. Aggregate scores are calculated when 
+the benchmark run is int (all integer benchmarks), fp (all floating point 
+benchmarks), or all (both integer and floating point benchmarks). These 
+aggregate scores are calculated as the geometric mean of the medians from 
+3 runs of each individual benchmark in that suite. Aggregate scores are 
+calculated based on tuning (base and/or peak) and whether the run is speed
+(single copy) or rate (multiple copies). As such, the following is a list of 
+all of the possible metrics that might be produced.
+
+Note: aggregate metrics are only produced when the benchmark designator is 
+int, fp or all and iterations is 3 (default).
+
+
+CINT2006 SUITE METRICS:
+The CINT2006 metrics are based on 12 benchmarks that measure a CPU's integer
+performance.
+
+SPECint2006=           peak, speed integer score
+SPECint_base2006=      base, speed integer score
+
+SPECint_rate2006=      peak, rate integer score
+SPECint_rate_base2006= base, rate integer score
+
+
+CFP2006 SUITE METRICS:
+The CFP2006 metrics are based on 17 benchmarks that measure a CPU's floating
+point performance.
+
+SPECfp_2006=          peak, speed floating point score
+SPECfp_base2006=      base, speed floating point score
+
+SPECfp_rate2006=      peak, rate floating point score
+SPECfp_rate_base2006= base, rate floating point score
+
+
+BENCHMARK METRICS:
+Individual benchmark metrics are displayed if the runtime parameter 
+include_benchmark_metrics is set (this is the default behavior unless 
+include_benchmark_metrics is set to '0'). Reference times are only applicable
+to speed runs and only output if the include_ref_times runtime parameter is set
+to '1'. Run times are only output if the include_run_times runtime parameter is
+set to '1'.
+
+
+RATE RUNS:
+base_run_timeN_[metric]=  base runtime in seconds
+base_rateN_[metric]=      base rate (ref time/run time * copies)
+base_selectedN_[metric]=  set to 1 if this metric is the median of all 3 
+                          [metric] base rates and thus included in the 
+                          corresponding aggregate metric
+peak_run_timeN_[metric]=  peak runtime in seconds
+peak_rateN_[metric]=      peak rate (ref time/run time * copies)
+peak_selectedN_[metric]=  set to 1 if this metric is the median of all 3 
+                          [metric] peak rates and thus included in the 
+                          corresponding aggregate metric
+
+
+SPEED RUNS:
+ref_time_[metric]=        reference time for this metric (applies to both base 
+                          and peak ratio calculations)
+base_run_timeN_[metric]=  base runtime in seconds
+base_ratioN_[metric]=     base ratio (ref time/run time)
+base_selectedN_[metric]=  set to 1 if this metric is the median of all 3 
+                          [metric] base rates and thus included in the 
+                          corresponding aggregate metric
+peak_run_timeN_[metric]=  peak runtime in seconds
+peak_ratioN_[metric]=     peak ratio (ref time/run time)
+peak_selectedN_[metric]=  set to 1 if this metric is the median of all 3 
+                          [metric] peak rates and thus included in the 
+                          corresponding aggregate metric
+
+
+EXAMPLES:
+The following are a few example outputs.
+
+RATE RUN, BASE AND PEAK, 3 ITERATIONS, WITH AGGREGATE CALCULATION:
+base_run_time1_400.perlbench=869.75
+base_rate1_400.perlbench=22.46622593
+peak_run_time1_400.perlbench=816.187
+peak_rate1_400.perlbench=23.94059205
+
+base_run_time2_400.perlbench=864.594
+base_rate2_400.perlbench=22.6002031
+peak_run_time2_400.perlbench=815.406
+peak_rate2_400.perlbench=23.96352247
+peak_selected2_400.perlbench=1
+
+base_run_time3_400.perlbench=868.859
+base_rate3_400.perlbench=22.48926466
+base_selected3_400.perlbench=1
+peak_run_time3_400.perlbench=814.672
+peak_rate3_400.perlbench=23.98511303
+
+SPEED RUN, 1 ITERATION:
+ref_time_401.bzip2=9650
+base_run_time1_401.bzip2=409.835562
+base_ratio1_401.bzip2=23.838829
+peak_run_time1_401.bzip2=353.328786
+peak_ratio1_401.bzip2=27.651299
