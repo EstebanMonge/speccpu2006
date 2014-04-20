@@ -67,7 +67,7 @@ if (!$bm_status) {
 	bm_log_msg('run validation is successful, starting run', basename(__FILE__), __LINE__);
 	// determine runspec arguments
 	// $spec_copies, $spec_config
-	if ($spec_copies == 1) $spec_copies = NULL;
+  // if ($spec_copies == 1) $spec_copies = NULL;
 	if ($spec_config == 'default.cfg') $spec_config = NULL;
 	$spec_benchmarks = implode(' ', $spec_benchmarks);
 	$spec_defines = bm_get_runspec_macros();
@@ -104,11 +104,13 @@ if (!$bm_status) {
 	$sse_param = NULL;
 	foreach($spec_defines as $key => $val) {
 		if (is_bool($val) && !$val) continue;
+		bm_log_msg("Adding custom macro ${key}=${val} (" . gettype($val) . ')', basename(__FILE__), __LINE__);
+		
 		// skip macros with spaces, dashes or periods if bin/util.pl has not been patched
-		if (!$util_patched && $val && (strpos($val, ' ') || strpos($val, '-') || strpos($val, '.'))) continue;
+		if ($key != 'sse' && !$util_patched && $val && (strpos($val, ' ') || strpos($val, '-') || strpos($val, '.'))) continue;
 		
 		$quote = '"';
-		$runspec .= ($p = ' --define ' . $key . (!is_bool($val) ? "=${quote}${val}${quote}" : ''));
+		$runspec .= ($p = ' --define ' . $key . (!is_bool($val) && $val != '1' ? "=${quote}${val}${quote}" : ''));
 		if ($key == 'sse') $sse_param = $p;
 	}
 	if ($spec_rate) $runspec .= " --define rate=${spec_copies}";

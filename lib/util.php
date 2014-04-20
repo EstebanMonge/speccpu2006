@@ -113,8 +113,10 @@ function bm_get_benchmarks() {
 			$benchmark = trim($benchmark);
 			$found = FALSE;
 			foreach(array_keys($benchmarks_ini) as $b) {
-				if ($benchmark == $b || preg_match("/[0-9]+\.${benchmark}\$/", $b)) {
+				if ($benchmark == $b || preg_match("/[0-9]+\.${benchmark}\$/", $b) || preg_match("/${benchmark}\./", $b)) {
 					$found = TRUE;
+					$pieces = explode('.', $b);
+					$benchmark = $pieces[0];
 					break;
 				}
 			}
@@ -326,7 +328,7 @@ function bm_get_runspec_macros() {
 		if ($sse = bm_get_sse()) $bm_runspec_macros['sse'] = $sse;
 		// Additional macros (define_* parameters)
 		foreach(bm_string_to_hash(shell_exec('env')) as $key => $val) {
-			if (preg_match('/^bm_param_define_(.*)$/', $key, $m)) $bm_runspec_macros[$m[1]] = $val;
+			if (preg_match('/^bm_param_define_(.*)$/', $key, $m)) $bm_runspec_macros[$m[1]] = trim($val) ? trim($val) : TRUE;
 		}
 	}
 	if ($bm_debug) {
@@ -442,7 +444,7 @@ function bm_string_to_hash($blob, $ini=FALSE, $excludeKeys=NULL, $includeKeys=NU
 					foreach($includeKeys as $regex) if (preg_match($regex, $key)) $found = TRUE;
 					if (!$found) $key = NULL;
 				}
-				if ($key && strlen($value)) {
+				if ($key) {
 					if ($ini && $iniSection) {
 						if (!isset($hash[$iniSection])) $hash[$iniSection] = array();
 						$hash[$iniSection][$key] = $value;

@@ -20,8 +20,7 @@ RUNTIME PARAMETERS:
 * benchmark                  the benchmark(s) to run (space separated) - may 
                              be any of the benchmark identifiers listed in 
                              config/spec-benchmarks.ini each separated by a 
-                             space. To exclude benchmarks, use a hat prefix 
-                             (e.g. benchmark="int ^xalanc")
+                             space
                              DEFAULT: all
 
 * comment                    optional comment to add to the log file
@@ -193,6 +192,8 @@ RUNTIME PARAMETERS:
                              More information is available about the use of 
                              macros on the SPEC website here: 
                              http://www.spec.org/cpu2006/Docs/config.html#sectionI.D.2
+                             For flags - do not set a value for this parameter
+                             (e.g. -p define_smt translates to --define smt)
                              DEFAULT: none
 
 * delay                      Add a delay of the specified number of seconds 
