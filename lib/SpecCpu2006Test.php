@@ -492,6 +492,20 @@ class SpecCpu2006Test {
         }
         if ($this->options['sse'] == 'none') unset($this->options['sse']);
         
+        // expand benchmarks (space and comma separated values)
+        $benchmarks = array();
+        if (isset($this->options['benchmark']) && !is_array($this->options['benchmark'])) $this->options['benchmark'] = array($this->options['benchmark']);
+        if (isset($this->options['benchmark'])) {
+          foreach($this->options['benchmark'] as $benchmark) {
+            foreach(explode(' ', $benchmark) as $b1) {
+              foreach(explode(',', $b1) as $b2) {
+                if (!in_array(trim($b2), $benchmarks)) $benchmarks[] = trim($b2);
+              }
+            }
+          }
+        }
+        $this->options['benchmark'] = $benchmarks;
+        
         // determine copies
         $this->options['copies'] = $this->getNumCopies($this->options['copies'], isset($this->options['max_copies']) ? $this->options['max_copies'] : NULL);
         // automatically set to rate run if --copies > 1
@@ -682,7 +696,7 @@ class SpecCpu2006Test {
                 if ($type == 'html') {
                   $html = file_get_contents($path);
                   $html = str_replace('http://www.spec.org/includes/css/', '//cloudharmony.com/assets/cpu2006/', $html);
-                  $html = str_replace('url(invalid.gif)', 'url(//cloudharmony.com/assets/cpu2006/invalid.gif)', $html);
+                  $html = str_replace("<style type=\"text/css\">\n<!--\nbody { background-image: url(invalid.gif) }\n-->\n</style>", '', $html);
                   if (preg_match('/img src="(.*).gif"/', $html, $m1)) $html = str_replace($m1[1] . '.gif', sprintf('spec%s2006.gif', $fp ? 'fp' : 'int'), $html);
                   $fp = fopen($path, 'w');
                   fwrite($fp, $html);

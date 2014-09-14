@@ -39,7 +39,9 @@ TESTING PARAMETERS
                              or --benchmark=400.perlbench). Additionally, you
                              may designate benchmarks that should be removed
                              by prefixing them with a minus character
-                             (e.g. --benchmark=all --benchmark=-400)
+                             (e.g. --benchmark=all --benchmark=-429). May also
+                             be specified using a single space or comma 
+                             separated value (e.g. --benchmark "all -429")
                              DEFAULT: all
 
 * comment                    optional comment to add to the log file
