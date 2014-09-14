@@ -203,7 +203,7 @@ class SpecCpu2006Test {
   		$working[$x64] = array('highest' => $highest, 'param' => $param, 'pieces' => $pieces);
   	}
   	// determine whether or use 32 or 64 bit parameter value
-  	if (count($keys = array_keys($working)) > 1) $key = is_64bit() ? 1 : 0;
+  	if (count($keys = array_keys($working)) > 1) $key = is_64bit() && $this->options['x64'] ? 1 : 0;
   	else $key = $keys[0];
   	$highest = $working[$key]['highest'];
   	$param = $working[$key]['param'];
