@@ -362,7 +362,7 @@ class SpecCpu2006Test {
           'ignore_errors' => 0,
           'iterations' => 3,
           'meta_cpu' => $sysInfo['cpu'],
-          'meta_memory' => $sysInfo['memory_gb'] . ' GB',
+          'meta_memory' => $sysInfo['memory_gb'] > 0 ? $sysInfo['memory_gb'] . ' GB' : $sysInfo['memory_mb'] . ' MB',
           'meta_os' => $sysInfo['os_info'],
           'nobuild' => 1,
           'nocleanup' => 0,
@@ -466,6 +466,7 @@ class SpecCpu2006Test {
           'nobuild:',
           'nocleanup:',
           'nonuma:',
+          'nosse_macro:',
           'output:',
           'purge_output',
           'rate',
@@ -607,7 +608,11 @@ class SpecCpu2006Test {
 			}
 		}
 		// SSE
-		$macros['sse'] = $this->getSse();
+		if ($sse = $this->getSse()) $macros['sse'] = $sse;
+  	else if (isset($this->options['sse']) && $this->options['sse'] == 'optimal' && isset($this->options['nosse_macro']) && $this->options['nosse_macro']) {
+  	  print_msg(sprintf('Adding --nosse_macro %s macro for --sse optimal and no SSE flag', $this->options['nosse_macro']), $this->verbose, __FILE__, __LINE__);
+  	  $macros[$this->options['nosse_macro']] = TRUE;
+  	}
 		// Additional macros (define_* parameters)
     foreach(get_prefixed_params('define_') as $key => $val) $macros[$key] = $val;
     
@@ -791,7 +796,7 @@ class SpecCpu2006Test {
       $sse = $options['sse'];
       $x64 = $options['x64'];
       $cmd = $runspec;
-      if ($macros['sse'] && !$sse) $cmd = str_replace($sseFlag, '', $cmd);
+      if ($sseFlag && !$sse) $cmd = str_replace($sseFlag, '', $cmd);
       if ($macros['x64'] != $x64) $cmd = str_replace($macros['x64'] ? ' --define x64' : 'runspec ', $macros['x64'] ? '' : 'runspec --define x64 ', $cmd);
       if ($script = $this->generateRunScript($cmd, $sse, $x64)) {
         print_msg(sprintf('Attempting to run SPEC CPU 2006 using options [SSE=%s; X64=%d] and script %s', $sse, $x64, $script), $this->verbose, __FILE__, __LINE__);

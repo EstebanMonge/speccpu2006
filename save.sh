@@ -17,9 +17,9 @@ if [ "$1" == "-h" ] || [ "$1" == "--help" ] ; then
   cat << EOF
 Usage: save.sh [args] [/path/to/results]
 
-Saves UnixBench test results to CSV files, Google BigQuery, MySQL or PostgreSQL. 
-UnixBench text reports may also be saved to S3, Google Cloud Storage or Azure 
-(API) compatible object storage
+Saves SPEC CPU 2006 test results to CSV files, Google BigQuery, MySQL or 
+PostgreSQL. Test artifacts may also be saved to S3, Google Cloud Storage or 
+Azure (API) compatible object storage
 
 If the [/path/to/results] argument is not specified, 'pwd' will be assumed. 
 This argument may be either the directory where test results have been written
