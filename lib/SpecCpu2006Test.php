@@ -289,9 +289,11 @@ class SpecCpu2006Test {
                 $prefix = 'benchmark_' . str_replace('.', '_', $row[0]);
                 if ($rate) $results['copies'] = $row[$offset + 1]*1;
                 else $results[$prefix . '_reftime'] = $row[$offset + 1]*1;
+                
                 // selected metric
                 if ($row[$offset + 4] == 1) {
                   $results[$prefix] = $row[$offset + 3]*1;
+                  $results[$prefix . '_runtime'] = $row[$offset + 2]*1;
                   print_msg(sprintf('Adding %s %s %s metric: %s', $row[0], $base ? 'base' : 'peak', $rate ? 'rate' : 'speed', $results[$prefix]), $verbose, __FILE__, __LINE__);
                 }
                 if (!isset($results[$prefix . '_metrics'])) $results[$prefix . '_metrics'] = array();
@@ -816,7 +818,7 @@ class SpecCpu2006Test {
         // non-zero exit code
         if ($ecode) print_msg(sprintf('Unable to run SPEC CPU 2006 using options [SSE=%s; X64=%d] - exit code %d. Check stderr file %s', $sse, $x64, $ecode, $efile), $this->verbose, __FILE__, __LINE__, TRUE);
         else {
-          if (strpos($spec, 'exit code=1')) print_msg(sprintf('One or more benchmarks exited with a non-zero exit code. Check stdout file %s', $sse, $x64, $ofile), $this->verbose, __FILE__, __LINE__, TRUE);
+          if (strpos($spec, 'exit code=1')) print_msg(sprintf('One or more benchmarks exited with a non-zero exit code. Check stdout file %s', $ofile), $this->verbose, __FILE__, __LINE__, TRUE);
           if (strpos($spec, 'NOT Building')) print_msg(sprintf('One more more SPEC CPU 2006 benchmark binaries were not present using options [SSE=%s; X64=%d]. Check stdout file %s', $sse, $x64, $ofile), $this->verbose, __FILE__, __LINE__, TRUE);
           $specFile = sprintf('%s/%s', $this->options['output'], self::SPEC_CPU_2006_RUN_OUTPUT_FILE);
           exec(sprintf('cp %s %s', $ofile, $specFile));

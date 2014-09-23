@@ -21,7 +21,7 @@
 require_once(dirname(__FILE__) . '/SpecCpu2006Test.php');
 require_once(dirname(__FILE__) . '/save/BenchmarkDb.php');
 $status = 1;
-$args = parse_args(array('nostore_csv', 'nostore_html', 'nostore_pdf', 'nostore_text', 'v' => 'verbose'));
+$args = parse_args(array('iteration:', 'nostore_csv', 'nostore_html', 'nostore_pdf', 'nostore_text', 'v' => 'verbose'));
 
 // get result directories => each directory stores 1 iteration of results
 $dirs = array();
@@ -37,7 +37,7 @@ if ($db =& BenchmarkDb::getDb()) {
   // get results from each directory
   foreach($dirs as $i => $dir) {
     $test = new SpecCpu2006Test($dir);
-    $iteration = $i + 1;
+    $iteration = isset($args['iteration']) && is_numeric($args['iteration']) && $args['iteration'] > 0 ? $args['iteration'] : $i + 1;
     // save artifacts
     print_msg(sprintf('Saving results in directory %s', $dir), isset($args['verbose']), __FILE__, __LINE__);
     foreach(array('specfp2006.csv' => 'nostore_csv', 'specfp2006.gif' => 'nostore_html', 'specfp2006.html' => 'nostore_html', 'specfp2006.pdf' => 'nostore_pdf', 'specfp2006.txt' => 'nostore_text', 
