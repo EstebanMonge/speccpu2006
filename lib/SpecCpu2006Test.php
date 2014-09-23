@@ -286,7 +286,7 @@ class SpecCpu2006Test {
             }
             else if ($section == 1 && count($row) == 12 && preg_match('/^[1-9]/', $row[0])) {
               if (is_numeric($row[$offset + 3]) && $row[$offset + 3] > 0) {
-                $prefix = 'benchmark_' . str_replace('.', '_', $row[0]);
+                $prefix = 'benchmark_' . strtolower(str_replace('.', '_', $row[0]));
                 if ($rate) $results['copies'] = $row[$offset + 1]*1;
                 else $results[$prefix . '_reftime'] = $row[$offset + 1]*1;
                 
