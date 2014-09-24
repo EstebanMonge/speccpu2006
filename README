@@ -194,7 +194,7 @@ TESTING PARAMETERS
                              defined below), separate the values with a pipe, 
                              and prefix the 64-bit specified value with x64: 
                              (e.g. copies="x64:100%/2GB|100%/1GB")
-                             DEFAULT: x64:100%/2GB|100%/1GB (NULL for speed runs)
+                             DEFAULT: x64:100%/1GB|100%/512MB (NULL for speed runs)
 
 * define_*                   additional macros to define using the runspec 
                              --define capability (these will be accessible in 

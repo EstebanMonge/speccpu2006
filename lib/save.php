@@ -37,7 +37,7 @@ if ($db =& BenchmarkDb::getDb()) {
   // get results from each directory
   foreach($dirs as $i => $dir) {
     $test = new SpecCpu2006Test($dir);
-    $iteration = isset($args['iteration']) && is_numeric($args['iteration']) && $args['iteration'] > 0 ? $args['iteration'] : $i + 1;
+    $iteration = isset($args['iteration']) && preg_match('/([0-9]+)/', $args['iteration'], $m) ? $m[1]*1 : $i + 1;
     // save artifacts
     print_msg(sprintf('Saving results in directory %s', $dir), isset($args['verbose']), __FILE__, __LINE__);
     foreach(array('specfp2006.csv' => 'nostore_csv', 'specfp2006.gif' => 'nostore_html', 'specfp2006.html' => 'nostore_html', 'specfp2006.pdf' => 'nostore_pdf', 'specfp2006.txt' => 'nostore_text', 
