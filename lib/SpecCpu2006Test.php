@@ -816,7 +816,7 @@ class SpecCpu2006Test {
         $spec = file_get_contents($ofile);
         
         // non-zero exit code
-        if ($ecode) print_msg(sprintf('Unable to run SPEC CPU 2006 using options [SSE=%s; X64=%d] - exit code %d. Check stderr file %s', $sse, $x64, $ecode, $efile), $this->verbose, __FILE__, __LINE__, TRUE);
+        if ($ecode && !$ignoreErrors) print_msg(sprintf('Unable to run SPEC CPU 2006 using options [SSE=%s; X64=%d] - exit code %d. Check stderr file %s', $sse, $x64, $ecode, $efile), $this->verbose, __FILE__, __LINE__, TRUE);
         else {
           if (strpos($spec, 'exit code=1')) print_msg(sprintf('One or more benchmarks exited with a non-zero exit code. Check stdout file %s', $ofile), $this->verbose, __FILE__, __LINE__, TRUE);
           if (strpos($spec, 'NOT Building')) print_msg(sprintf('One more more SPEC CPU 2006 benchmark binaries were not present using options [SSE=%s; X64=%d]. Check stdout file %s', $sse, $x64, $ofile), $this->verbose, __FILE__, __LINE__, TRUE);
