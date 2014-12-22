@@ -358,6 +358,7 @@ class SpecCpu2006Test {
         $sysInfo = get_sys_info();
         $defaults = array(
           'benchmark' => 'all',
+          'collectd_rrd_dir' => '/var/lib/collectd/rrd',
           'copies' => 'x64:100%/2GB|100%/1GB',
           'failover_no_sse' => 0,
           'huge_pages' => 0,
@@ -386,6 +387,8 @@ class SpecCpu2006Test {
         );
         $opts = array(
           'benchmark:',
+          'collectd_rrd',
+          'collectd_rrd_dir:',
           'comment:',
           'config:',
           'copies:',
@@ -738,6 +741,7 @@ class SpecCpu2006Test {
    * @return boolean
    */
   public function test() {
+    $rrdStarted = isset($this->options['collectd_rrd']) ? ch_collectd_rrd_start($this->options['collectd_rrd_dir'], isset($this->options['verbose'])) : FALSE;
     $success = FALSE;
     
     $this->getRunOptions();
@@ -846,6 +850,7 @@ class SpecCpu2006Test {
         break;
       }
     }
+    if ($rrdStarted) ch_collectd_rrd_stop($this->options['collectd_rrd_dir'], $this->options['output'], isset($this->options['verbose']));
     
     return $success;
   }
@@ -990,6 +995,14 @@ class SpecCpu2006Test {
     }
     // validate huge_pages
     if ($this->options['huge_pages'] && !file_exists(self::SPEC_CPU_2006_HUGE_PAGES_LIB64) && !file_exists(self::SPEC_CPU_2006_HUGE_PAGES_LIB32)) $validated['huge_pages'] = sprintf('--huge_pages set but /usr/lib64/libhugetlbfs.so and /usr/lib/libhugetlbfs.so are not present');
+    
+    // validate collectd rrd options
+    if (isset($this->options['collectd_rrd'])) {
+      if (!ch_check_sudo()) $validated['collectd_rrd'] = 'sudo privilege is required to use this option';
+      else if (!is_dir($this->options['collectd_rrd_dir'])) $validated['collectd_rrd_dir'] = sprintf('The directory %s does not exist', $this->options['collectd_rrd_dir']);
+      else if ((shell_exec('ps aux | grep collectd | wc -l')*1 < 2)) $validated['collectd_rrd'] = 'collectd is not running';
+      else if ((shell_exec(sprintf('find %s -maxdepth 1 -type d 2>/dev/null | wc -l', $this->options['collectd_rrd_dir']))*1 < 2)) $validated['collectd_rrd_dir'] = sprintf('The directory %s is empty', $this->options['collectd_rrd_dir']);
+    }
     
     return $validated;
   }

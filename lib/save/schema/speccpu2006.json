@@ -175,6 +175,7 @@
   {"name": "benchmark_483_xalancbmk_stdev", "type": "float"},
   {"name": "benchmark_version", "type": "char(8)"},
   {"name": "benchmarks", "type": "char(96)"},
+  {"name": "collectd_rrd", "type": "char(255)"},
   {"name": "comment", "type": "char(255)"},
   {"name": "config", "type": "char(64)"},
   {"name": "copies", "type": "tinyint unsigned"},

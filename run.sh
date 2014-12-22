@@ -57,8 +57,22 @@ TESTING PARAMETERS
                              or --benchmark=400.perlbench). Additionally, you
                              may designate benchmarks that should be removed
                              by prefixing them with a minus character
-                             (e.g. --benchmark=all --benchmark=-400)
+                             (e.g. --benchmark=all --benchmark=-429). May also
+                             be specified using a single space or comma 
+                             separated value (e.g. --benchmark "all -429")
                              DEFAULT: all
+                             
+--collectd_rrd               If set, collectd rrd stats will be captured from 
+                             --collectd_rrd_dir. To do so, when testing starts,
+                             existing directories in --collectd_rrd_dir will 
+                             be renamed to .bak, and upon test completion 
+                             any directories not ending in .bak will be zipped
+                             and saved along with other test artifacts (as 
+                             collectd-rrd.zip). User MUST have sudo privileges
+                             to use this option
+
+--collectd_rrd_dir           Location where collectd rrd files are stored - 
+                             default is /var/lib/collectd/rrd
 
 --comment                    optional comment to add to the log file
                              DEFAULT: none
@@ -210,7 +224,7 @@ TESTING PARAMETERS
                              defined below), separate the values with a pipe, 
                              and prefix the 64-bit specified value with x64: 
                              (e.g. copies="x64:100%/2GB|100%/1GB")
-                             DEFAULT: x64:100%/2GB|100%/1GB (NULL for speed runs)
+                             DEFAULT: x64:100%/1GB|100%/512MB (NULL for speed runs)
 
 --define_--                  additional macros to define using the runspec 
                              --define capability (these will be accessible in 
@@ -304,6 +318,9 @@ TESTING PARAMETERS
                              'numactl --interleave=all' even if numa is 
                              supported
                              DEFAULT: 0
+                             
+--nosse_macro                Optional macro to define for --sse optimal if no 
+                             SSE flag will be set
                              
 --output                     The output directory to use for writing test 
                              artifacts. If not specified, the current working 
@@ -525,14 +542,7 @@ This benchmark has the following dependencies:
                              and available in the 'spec_dir' directory
  php-cli                     Test automation scripts (/usr/bin/php)
  
- 
-TEST ARTIFACTS
-This benchmark generates the following artifacts:
-
-speccpu2006.csv              Test results in CSV format
-speccpu2006.html             HTML formatted test report
-speccpu2006.pdf              PDF formatted test report
-speccpu2006.txt              Text formatted test report
+ zip                         Used to compress test artifacts
 
 
 USAGE

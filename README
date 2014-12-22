@@ -43,6 +43,18 @@ TESTING PARAMETERS
                              be specified using a single space or comma 
                              separated value (e.g. --benchmark "all -429")
                              DEFAULT: all
+                             
+* collectd_rrd               If set, collectd rrd stats will be captured from 
+                             --collectd_rrd_dir. To do so, when testing starts,
+                             existing directories in --collectd_rrd_dir will 
+                             be renamed to .bak, and upon test completion 
+                             any directories not ending in .bak will be zipped
+                             and saved along with other test artifacts (as 
+                             collectd-rrd.zip). User MUST have sudo privileges
+                             to use this option
+
+* collectd_rrd_dir           Location where collectd rrd files are stored - 
+                             default is /var/lib/collectd/rrd
 
 * comment                    optional comment to add to the log file
                              DEFAULT: none
@@ -512,11 +524,13 @@ This benchmark has the following dependencies:
                              and available in the 'spec_dir' directory
  perl                        Used by SPEC CPU 2006
  php-cli                     Test automation scripts (/usr/bin/php)
+ zip                         Used to compress test artifacts
  
  
 TEST ARTIFACTS
 This benchmark generates the following artifacts:
 
+collectd-rrd.zip             collectd RRD files (see --collectd_rrd)
 specint2006.csv              SPECint test results in CSV format
 specint2006.gif              GIF image referenced in the SPECint HTML report
 specint2006.html             HTML formatted SPECint test report
@@ -750,6 +764,7 @@ benchmark_483_xalancbmk_stdev
 
 benchmark_version: [benchmark version]
 benchmarks: comma separated names of benchmarks run - or int, fp or all
+collectd_rrd: [URL to zip file containing collectd rrd files]
 comment
 config: config file name
 copies: number of copies (for rate runs only)

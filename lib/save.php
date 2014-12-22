@@ -21,7 +21,7 @@
 require_once(dirname(__FILE__) . '/SpecCpu2006Test.php');
 require_once(dirname(__FILE__) . '/save/BenchmarkDb.php');
 $status = 1;
-$args = parse_args(array('iteration:', 'nostore_csv', 'nostore_html', 'nostore_pdf', 'nostore_text', 'v' => 'verbose'));
+$args = parse_args(array('iteration:', 'nostore_csv', 'nostore_html', 'nostore_pdf', 'nostore_rrd', 'nostore_text', 'v' => 'verbose'));
 
 // get result directories => each directory stores 1 iteration of results
 $dirs = array();
@@ -41,12 +41,13 @@ if ($db =& BenchmarkDb::getDb()) {
     // save artifacts
     print_msg(sprintf('Saving results in directory %s', $dir), isset($args['verbose']), __FILE__, __LINE__);
     foreach(array('specfp2006.csv' => 'nostore_csv', 'specfp2006.gif' => 'nostore_html', 'specfp2006.html' => 'nostore_html', 'specfp2006.pdf' => 'nostore_pdf', 'specfp2006.txt' => 'nostore_text', 
-                  'specint2006.csv' => 'nostore_csv', 'specint2006.gif' => 'nostore_html', 'specint2006.html' => 'nostore_html', 'specint2006.pdf' => 'nostore_pdf', 'specint2006.txt' => 'nostore_text') as $file => $arg) {
+                  'specint2006.csv' => 'nostore_csv', 'specint2006.gif' => 'nostore_html', 'specint2006.html' => 'nostore_html', 'specint2006.pdf' => 'nostore_pdf',
+                  'collectd-rrd.zip' => 'nostore_rrd', 'specint2006.txt' => 'nostore_text') as $file => $arg) {
       $file = sprintf('%s/%s', $dir, $file);
       if (!isset($args[$arg]) && file_exists($file)) {
         $pieces = explode('.', $file);
         $type = $pieces[count($pieces) - 1];
-        $col = sprintf('spec%s_%s', preg_match('/specfp/', basename($file)) ? 'fp' : 'int', $type == 'txt' ? 'text' : $type);
+        $col = $arg == 'nostore_rrd' ? 'collectd_rrd' : sprintf('spec%s_%s', preg_match('/specfp/', basename($file)) ? 'fp' : 'int', $type == 'txt' ? 'text' : $type);
         $saved = $db->saveArtifact($file, $col);
         if ($saved) print_msg(sprintf('Saved %s successfully', basename($file)), isset($args['verbose']), __FILE__, __LINE__);
         else if ($saved === NULL) print_msg(sprintf('Unable to save %s', basename($file)), isset($args['verbose']), __FILE__, __LINE__, TRUE);
