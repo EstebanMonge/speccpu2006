@@ -399,6 +399,7 @@ class SpecCpu2006Test {
           'ignore_errors',
           'iterations:',
           'max_copies:',
+          'meta_burst:',
           'meta_compute_service:',
           'meta_compute_service_id:',
           'meta_cpu:',
