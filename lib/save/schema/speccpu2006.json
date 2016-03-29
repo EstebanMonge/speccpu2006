@@ -187,6 +187,7 @@
   {"name": "iteration", "type": "tinyint unsigned"},
   {"name": "iterations", "type": "tinyint unsigned"},
   {"name": "max_copies", "type": "tinyint unsigned"},
+  {"name": "meta_burst", "type": "boolean"},
   {"name": "meta_compute_service", "type": "char(32)"},
   {"name": "meta_compute_service_id", "type": "char(24)"},
   {"name": "meta_cpu", "type": "char(32)"},
