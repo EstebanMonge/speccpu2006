@@ -427,6 +427,8 @@ config using macros %{parameter_name}
 
 * meta_burst                 If set to 1, designates testing performed in burst 
                              mode (e.g. Amazon EC2 t-series burst)
+                             
+* meta_compiler              Details about the compiler (e.g. "Intel Compiler v16")
 
 * meta_compute_service       The name of the compute service this test pertains
                              to. May also be specified using the environment 
@@ -782,6 +784,7 @@ iteration: [iteration number (used with incremental result directories)]
 iterations: number of iterations - 3 is default (required for compliant runs)
 max_copies
 meta_burst
+meta_compiler
 meta_compute_service 
 meta_compute_service_id*
 meta_cpu: [CPU model info]

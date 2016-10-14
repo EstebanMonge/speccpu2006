@@ -443,6 +443,11 @@ these parameters will be passed in to runspec using
 --define [parameter_name]=[parameter_value] and will then be accessible in the 
 config using macros %{parameter_name}
 
+--meta_burst                 If set to 1, designates testing performed in burst 
+                             mode (e.g. Amazon EC2 t-series burst)
+                             
+--meta_compiler              Details about the compiler (e.g. "Intel Compiler v16")
+
 --meta_compute_service       The name of the compute service this test pertains
                              to. May also be specified using the environment 
                              variable bm_compute_service
