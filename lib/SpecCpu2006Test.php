@@ -707,7 +707,7 @@ class SpecCpu2006Test {
                 if ($type == 'html') {
                   $html = file_get_contents($path);
                   $html = str_replace('http://www.spec.org/includes/css/', '//cloudharmony.com/assets/cpu2006/', $html);
-                  $html = str_replace("<style type=\"text/css\">\n<!--\nbody { background-image: url(invalid.gif) }\n-->\n</style>", '', $html);
+                  $html = str_replace('body { background-image: url(invalid.gif) }', '', $html);
                   if (preg_match('/img src="(.*).gif"/', $html, $m1)) $html = str_replace($m1[1] . '.gif', sprintf('spec%s2006.gif', $fp ? 'fp' : 'int'), $html);
                   $fp = fopen($path, 'w');
                   fwrite($fp, $html);
