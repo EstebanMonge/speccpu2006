@@ -643,7 +643,7 @@ class SpecCpu2006Test {
   		return NULL;
   	}
     
-  	$sse_flags = array('SSE2', 'SSE3', 'SSSE3', 'SSE4.1', 'SSE4.2', 'AVX');
+  	$sse_flags = array('SSE2', 'SSE3', 'SSSE3', 'SSE4.1', 'SSE4.2', 'AVX', 'AVX2');
   	$sse = $this->options['sse'];
   	if ($sse == 'optimal') {
   	  foreach($sse_flags as $flag) {
@@ -900,9 +900,9 @@ class SpecCpu2006Test {
       'run_timeout' => array('min' => 3600, 'required' => TRUE),
       'size' => array('option' => array('test', 'train', 'ref')),
       'spec_dir' => array('write' => TRUE, 'required' => TRUE),
-      'sse' => array('option' => array('none', 'AVX', 'SSE4.2', 'SSE4.1', 'SSSE3', 'SSE3', 'SSE2', 'optimal'), 'required' => TRUE),
-      'sse_max' => array('option' => array('AVX', 'SSE4.2', 'SSE4.1', 'SSSE3', 'SSE3', 'SSE2')),
-      'sse_min' => array('option' => array('AVX', 'SSE4.2', 'SSE4.1', 'SSSE3', 'SSE3', 'SSE2')),
+      'sse' => array('option' => array('none', 'AVX2', 'AVX', 'SSE4.2', 'SSE4.1', 'SSSE3', 'SSE3', 'SSE2', 'optimal'), 'required' => TRUE),
+      'sse_max' => array('option' => array('AVX2', 'AVX', 'SSE4.2', 'SSE4.1', 'SSSE3', 'SSE3', 'SSE2')),
+      'sse_min' => array('option' => array('AVX2', 'AVX', 'SSE4.2', 'SSE4.1', 'SSSE3', 'SSE3', 'SSE2')),
       'tune' => array('option' => array('base', 'peak', 'all')),
       'validate_disk_space' => array('min' => 0, 'max' => 1, 'required' => TRUE),
       'x64' => array('min' => 0, 'max' => 2, 'required' => TRUE),
