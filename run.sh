@@ -377,6 +377,8 @@ TESTING PARAMETERS
 
                              optimal: choose the most optimal flag
                              none:    do not use SSE optimizations
+                             AVX2:    AVX2, AVX, SSE4.2, SSE4.1, SSSE3, SSE3, 
+                                      SSE2 and SSE instructions
                              AVX:     AVX, SSE4.2, SSE4.1, SSSE3, SSE3, SSE2 
                                       and SSE instructions
                              SSE4.2:  SSE4.2, SSE4.1, SSSE3, SSE3 SSE2 and 
@@ -394,13 +396,13 @@ TESTING PARAMETERS
 --sse_max                    The max SSE flag to support in conjunction with 
                              sse=optimal - if a processor supports greater than 
                              this SSE level, sse_max will be used instead
-                             DEFAULT: SSE4.2
+                             DEFAULT: AVX2
 
 --sse_min                    The minimum SSE flag to support in conjunction with 
                              sse=optimal - if a processor does not at least 
                              support this SSE level sse optimization will not 
                              be used
-                             DEFAULT: SSSE3
+                             DEFAULT: SSE4.2
 
 --tune                       Tuning option: base, peak or all - reportable runs 
                              must be either base or all
