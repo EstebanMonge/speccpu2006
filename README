@@ -428,7 +428,7 @@ config using macros %{parameter_name}
 * meta_burst                 If set to 1, designates testing performed in burst 
                              mode (e.g. Amazon EC2 t-series burst)
                              
-* meta_compiler              Details about the compiler (e.g. "Intel Compiler v16")
+* meta_compiler              Details about the compiler (e.g. "Intel v16")
 
 * meta_compute_service       The name of the compute service this test pertains
                              to. May also be specified using the environment 
