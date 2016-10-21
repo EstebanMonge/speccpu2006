@@ -498,7 +498,6 @@ class SpecCpu2006Test {
         foreach($defaults as $key => $val) {
           if (!isset($this->options[$key])) $this->options[$key] = $val;
         }
-        if ($this->options['sse'] == 'none') unset($this->options['sse']);
         
         // expand benchmarks (space and comma separated values)
         $benchmarks = array();
@@ -646,7 +645,8 @@ class SpecCpu2006Test {
     
   	$sse_flags = array('SSE2', 'SSE3', 'SSSE3', 'SSE4.1', 'SSE4.2', 'AVX', 'AVX2');
   	$sse = $this->options['sse'];
-  	if ($sse == 'optimal') {
+  	if ($sse == 'none') return NULL;
+  	else if ($sse == 'optimal') {
   	  foreach($sse_flags as $flag) {
   	    $ecode = (exec(sprintf('cat /proc/cpuinfo | grep %s >/dev/null; echo $?', str_replace('.', '_', strtolower($flag)))))*1;
   	    if ($ecode === 0) {
