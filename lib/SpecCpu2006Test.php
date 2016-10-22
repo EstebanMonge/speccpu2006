@@ -614,7 +614,7 @@ class SpecCpu2006Test {
 			}
 		}
 		// SSE
-		if ($sse = $this->getSse()) $macros['sse'] = str_replace('sse4_2', 'sse42', strtolower($sse));
+		if ($sse = $this->getSse()) $macros['sse'] = str_replace('sse4.2', 'sse42', str_replace('sse4_2', 'sse42', strtolower($sse)));
   	else if (isset($this->options['sse']) && $this->options['sse'] == 'optimal' && isset($this->options['nosse_macro']) && $this->options['nosse_macro']) {
   	  print_msg(sprintf('Adding --nosse_macro %s macro for --sse optimal and no SSE flag', $this->options['nosse_macro']), $this->verbose, __FILE__, __LINE__);
   	  $macros[$this->options['nosse_macro']] = TRUE;
