@@ -485,6 +485,7 @@ class SpecCpu2006Test {
           'sse:',
           'sse_max:',
           'sse_min:',
+          'sse_skip:',
           'tune:',
           'validate_disk_space',
           'v' => 'verbose',
@@ -645,9 +646,13 @@ class SpecCpu2006Test {
     
   	$sse_flags = array('SSE2', 'SSE3', 'SSSE3', 'SSE4.1', 'SSE4.2', 'AVX', 'AVX2');
   	$sse = $this->options['sse'];
+  	$skip_sse = isset($this->options['sse_skip']) ? $this->options['sse_skip'] : NULL;
+  	
   	if ($sse == 'none') return NULL;
   	else if ($sse == 'optimal') {
   	  foreach($sse_flags as $flag) {
+  	    if ($skip_sse == $flag) continue;
+  	    
   	    $ecode = (exec(sprintf('cat /proc/cpuinfo | grep %s >/dev/null; echo $?', str_replace('.', '_', strtolower($flag)))))*1;
   	    if ($ecode === 0) {
   	      $sse = $flag;
@@ -671,7 +676,7 @@ class SpecCpu2006Test {
   		$sse = NULL;
   	}
   	if ($max_sse !== FALSE && $sse && $sse_pos > $max_sse) {
-  	  print_msg(sprintf('SSE %s is greater than --sse_max %s - changint to %s', $sse, $this->options['sse_max'], $this->options['sse_max']), $this->verbose, __FILE__, __LINE__);
+  	  print_msg(sprintf('SSE %s is greater than --sse_max %s - changing to %s', $sse, $this->options['sse_max'], $this->options['sse_max']), $this->verbose, __FILE__, __LINE__);
   		$sse = $this->options['sse_max'];
   	}
 
@@ -904,6 +909,7 @@ class SpecCpu2006Test {
       'sse' => array('option' => array('none', 'AVX2', 'AVX', 'SSE4.2', 'SSE4.1', 'SSSE3', 'SSE3', 'SSE2', 'optimal'), 'required' => TRUE),
       'sse_max' => array('option' => array('AVX2', 'AVX', 'SSE4.2', 'SSE4.1', 'SSSE3', 'SSE3', 'SSE2')),
       'sse_min' => array('option' => array('AVX2', 'AVX', 'SSE4.2', 'SSE4.1', 'SSSE3', 'SSE3', 'SSE2')),
+      'sse_skip' => array('option' => array('AVX2', 'AVX', 'SSE4.2', 'SSE4.1', 'SSSE3', 'SSE3', 'SSE2')),
       'tune' => array('option' => array('base', 'peak', 'all')),
       'validate_disk_space' => array('min' => 0, 'max' => 1, 'required' => TRUE),
       'x64' => array('min' => 0, 'max' => 2, 'required' => TRUE),

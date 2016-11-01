@@ -404,6 +404,9 @@ TESTING PARAMETERS
                              be used
                              DEFAULT: SSE4.2
 
+--sse_skip                   Use in conjunction with sse=optimal to skip a 
+                             specific SSE flag
+
 --tune                       Tuning option: base, peak or all - reportable runs 
                              must be either base or all
                              DEFAULT: base
