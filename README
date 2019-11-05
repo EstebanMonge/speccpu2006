@@ -773,7 +773,7 @@ benchmark_483_xalancbmk_runtime
 benchmark_483_xalancbmk_stdev
 
 benchmark_version: [benchmark version]
-benchmarks: comma separated names of benchmarks run - or int, fp or all
+benchmarks: pipe separated names of benchmarks run - or int, fp or all
 collectd_rrd: [URL to zip file containing collectd rrd files]
 comment
 config: config file name

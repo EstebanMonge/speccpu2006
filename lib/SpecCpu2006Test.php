@@ -266,7 +266,7 @@ class SpecCpu2006Test {
       foreach($this->options as $key => $val) {
         $col = $key;
         if ($col == 'benchmark') $col = 'benchmarks';
-        $results[$col] = is_array($val) ? implode(',', $val) : $val;
+        $results[$col] = is_array($val) ? implode('|', $val) : $val;
       }
       foreach(array('specint2006.csv', 'specfp2006.csv') as $csv) {
         if (file_exists($csv = sprintf('%s/%s', $this->options['output'], $csv))) {
